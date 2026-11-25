@@ -12,19 +12,25 @@
     <artifactId>marcai</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>marcai</name>
-    <description>marcai</description>
-    <url/>
+    <description>API de agendamentos com lembrete e confirmação pelo WhatsApp</description>
+    <url>https://github.com/lucasdanielalbanocorrea-coder/marcai</url>
     <licenses>
-        <license/>
+        <license>
+            <name>MIT</name>
+            <url>https://opensource.org/license/mit</url>
+        </license>
     </licenses>
     <developers>
-        <developer/>
+        <developer>
+            <name>Lucas Correa</name>
+            <url>https://github.com/lucasdanielalbanocorrea-coder</url>
+        </developer>
     </developers>
     <scm>
-        <connection/>
-        <developerConnection/>
-        <tag/>
-        <url/>
+        <connection>scm:git:https://github.com/lucasdanielalbanocorrea-coder/marcai.git</connection>
+        <developerConnection>scm:git:git@github.com:lucasdanielalbanocorrea-coder/marcai.git</developerConnection>
+        <tag>HEAD</tag>
+        <url>https://github.com/lucasdanielalbanocorrea-coder/marcai</url>
     </scm>
     <properties>
         <java.version>27</java.version>
