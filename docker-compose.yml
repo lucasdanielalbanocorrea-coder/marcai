@@ -1,0 +1,50 @@
+# Desenvolvimento: `./mvnw spring-boot:run` sobe só o postgres automaticamente.
+# Tudo em container (perfil prod): `docker compose --profile app up --build`
+services:
+  postgres:
+    image: postgres:17.6-alpine
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-marcai}
+      POSTGRES_USER: ${POSTGRES_USER:-marcai}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-marcai}
+    ports:
+      - "127.0.0.1::5432" # só nesta máquina, porta aleatória; o Spring Boot descobre sozinho
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  # Só em dev: imita a Graph API da Meta e guarda as mensagens "enviadas".
+  # Veja o que a aplicação mandou com: scripts/mensagens-enviadas.sh
+  whatsapp-fake:
+    profiles: [dev]
+    image: wiremock/wiremock:3.13.2-alpine
+    # O HttpClient do Java tenta upgrade para HTTP/2 em http:// e o WireMock perde o corpo.
+    command: ["--disable-http2-plain"]
+    ports:
+      - "127.0.0.1:8089:8080"
+    volumes:
+      - ./docker/whatsapp-fake:/home/wiremock:ro
+
+  app:
+    profiles: [app]
+    build: .
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/${POSTGRES_DB:-marcai}
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER:-marcai}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD:-marcai}
+    ports:
+      - "8080:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+volumes:
+  postgres-data:

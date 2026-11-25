@@ -1,0 +1,10 @@
+# Todos os segredos vêm de variáveis de ambiente (veja .env.example); sem elas a aplicação não sobe.
+# Banco: SPRING_DATASOURCE_URL, SPRING_DATASOURCE_USERNAME e SPRING_DATASOURCE_PASSWORD.
+spring:
+  docker:
+    compose:
+      enabled: false
+
+server:
+  # Respeita X-Forwarded-* quando roda atrás de proxy/load balancer com HTTPS.
+  forward-headers-strategy: framework
