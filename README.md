@@ -250,4 +250,4 @@ Distribuído sob a licença MIT. Veja [`LICENSE`](LICENSE).
 
 ## Autor
 
-**Lucas Correa** · [GitHub](https://github.com/lucasdanielalbanocorrea-coder)
+**Lucas Daniel Albano Correa** · [GitHub](https://github.com/lucasdanielalbanocorrea-coder)
