@@ -1,0 +1,31 @@
+# Só para desenvolvimento local (./mvnw spring-boot:run e testes já ativam este perfil).
+# Sem nenhum perfil a aplicação exige todos os segredos, então um deploy esquecido nunca usa estes valores.
+# O banco e o WhatsApp falso sobem sozinhos pelo docker-compose.yml (spring-boot-docker-compose).
+# Os valores abaixo só servem para rodar localmente; o .env ou variáveis de ambiente têm prioridade.
+spring:
+  docker:
+    compose:
+      profiles:
+        active: dev # sobe também o whatsapp-fake
+
+oauth:
+  client:
+    id: ${OAUTH_CLIENT_ID:marcai-dev}
+    secret: ${OAUTH_CLIENT_SECRET:dev-secret}
+
+lembrete:
+  intervalo: PT30S
+
+whatsapp:
+  # WireMock local que imita a Graph API (veja README > "Testando sem o WhatsApp real").
+  # Para usar a Meta de verdade em dev: WHATSAPP_API_URL=https://graph.facebook.com/v23.0 no .env.
+  api-url: ${WHATSAPP_API_URL:http://localhost:8089/v23.0}
+  token: ${WHATSAPP_TOKEN:dev-token}
+  phone-number-id: ${WHATSAPP_PHONE_NUMBER_ID:000000000000000}
+  app-secret: ${WHATSAPP_APP_SECRET:dev-app-secret}
+  verify-token: ${WHATSAPP_VERIFY_TOKEN:dev-verify-token}
+  template-lembrete: ${WHATSAPP_TEMPLATE_LEMBRETE:lembrete_agendamento}
+
+logging:
+  level:
+    io.github.lucasdanielalbanocorreadev.marcai: debug

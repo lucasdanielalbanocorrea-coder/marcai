@@ -1,0 +1,36 @@
+spring:
+  application:
+    name: marcai
+  config:
+    # Em desenvolvimento os segredos podem vir de um arquivo .env na raiz (veja .env.example).
+    import: optional:file:.env[.properties]
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate # o schema é responsabilidade do Flyway
+  http:
+    clients:
+      connect-timeout: 5s
+      read-timeout: 10s
+
+# Segredos NÃO são declarados aqui. Em produção chegam por variável de ambiente, que o Spring
+# associa sozinho (OAUTH_CLIENT_ID -> oauth.client.id, WHATSAPP_APP_SECRET -> whatsapp.app-secret...).
+# Se faltar alguma, a validação de OAuthClientProperties/WhatsAppProperties impede a aplicação de subir.
+# Não use "${VAR}" sem valor padrão para segredos: o Spring Boot usaria o texto literal "${VAR}".
+lembrete:
+  intervalo: PT5M
+
+whatsapp:
+  api-url: https://graph.facebook.com/v23.0
+  template-lembrete: lembrete_agendamento
+  idioma-template: pt_BR
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
+  endpoint:
+    health:
+      probes:
+        enabled: true
